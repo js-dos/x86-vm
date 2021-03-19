@@ -1,7 +1,7 @@
-# Browser VM
+# x86 VM
 
 A custom [Buildroot](https://buildroot.org/) config for a Linux x86 VM, meant to
-be run in the browser as part of [browser-shell](https://github.com/humphd/browser-shell).
+be run in the browser as part of [js-dos](https://github.com/js-dos).
 The resulting Linux ISO is meant to be run under
 emulation in the browser via [v86](https://github.com/copy/v86), and includes:
 
@@ -12,6 +12,25 @@ emulation in the browser via [v86](https://github.com/copy/v86), and includes:
 Following the [Buildroot customization docs](https://buildroot.org/downloads/manual/manual.html#customize)
 we create a folder `buildroot-v86/` with all the necessary config files,
 filesystem overlay, and scripts necessary to build our distribution.
+
+## How to build
+
+Enter buildroot directory and execute:
+
+```
+make BR2_EXTERNAL=<path-to-x86-vm>/buildroot-v86/ v86_defconfig
+make
+```
+
+## Crosscompiling
+```
+BR2_OUTPUT="<path-to-buildroot>/output" \
+CC="$BR2_OUTPUT/host/bin/i686-buildroot-linux-musl-gcc" \
+CXX="$BR2_OUTPUT/host/bin/i686-buildroot-linux-musl-g++" \
+CFLAGS="--sysroot=$BR2_OUTPUT/staging -march=pentium3" \
+CXXFLAGS="--sysroot=$BR2_OUTPUT/staging -march=pentium3" \
+cmake ..
+```
 
 ## Running via Docker
 
